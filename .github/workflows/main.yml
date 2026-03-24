@@ -1,19 +1,46 @@
-name: Docker CI
+name: Docker CI with Allure
 
 on:
   push:
-    branches: [ "main", "master" ] # Сработает, когда отправишь код в эти ветки
+    branches: [ "main", "master" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        run: docker build -t my-test-app .
+      - name: Build and Run Tests
+        # Запускаем докер и копируем результаты из него наружу
+        run: |
+          docker build -t my-test-app .
+          docker run --name test-container my-test-app || true
+          docker cp test-container:/app/allure-results ./allure-results
+          docker rm test-container
 
-      - name: Run Tests in Docker
-        run: docker run my-test-app
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Allure Report Action
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
