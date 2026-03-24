@@ -1,2 +1,2 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","1811","test_api_to_ui_pom","","Tue Mar 24 17:12:11 UTC 2026","passed","Tue Mar 24 17:12:13 UTC 2026","","test_dakdak","",""
+"","2119","test_api_to_ui_pom","","Tue Mar 24 17:13:36 UTC 2026","passed","Tue Mar 24 17:13:38 UTC 2026","","test_dakdak","",""
