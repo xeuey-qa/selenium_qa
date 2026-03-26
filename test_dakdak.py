@@ -29,6 +29,20 @@ def test_api_to_ui_pom(browser):
     with allure.step(f"Проверка поиска"):
         WebDriverWait(browser,10).until(EC.title_contains(email_name))
         assert email_name in browser.title
+
+@allure.feature("API Testing")
+@allure.story("Check status code")
+def test_get_users_list():
+    with allure.step("Отправляем запрос к API"):
+        response = requests.get("https://reqres.in/api/users?page=2")
+    
+    with allure.step("Проверяем, что статус код 200"):
+        assert response.status_code == 200
+        
+    with allure.step("Проверяем структуру данных"):
+        data = response.json()
+        assert "data" in data
+        assert len(data["data"]) > 0
         
         
         

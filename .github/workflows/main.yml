@@ -44,3 +44,16 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
+          
+      - name: Send Telegram Notification
+        if: always()
+        run: |
+          status="${{ job.status }}"
+          if [ "$status" = "success" ]; then
+            emoji="✅"
+          else
+            emoji="❌"
+          fi
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+          -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+          -d text="$emoji Тесты завершены со статусом: $status. Результаты здесь: https://xeuey-qa.github.io/selenium_qa/"
