@@ -57,4 +57,4 @@ jobs:
           # Добавили флаг -i для подробного лога
           curl -i -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
           -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-          -d text="$emoji Тесты завершены со статусом: $status. Результаты здесь: https://xeuey-qa.github.io/selenium_qa/"ы
+          -d text="$emoji Тесты завершены со статусом: $status. Результаты здесь: https://xeuey-qa.github.io/selenium_qa/"
